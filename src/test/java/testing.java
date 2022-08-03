@@ -1,5 +1,3 @@
-package ca.fxco.encodedchat;
-
 import ca.fxco.encodedchat.encodingSets.*;
 
 public class testing {
