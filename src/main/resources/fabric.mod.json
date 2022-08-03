@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "encoded-chat",
+  "version": "${version}",
+  "name": "EncodedChat",
+  "description": "Can't report what you can't understand. Encodes the chat so only people with the mod understand what you said",
+  "authors": [
+    "FX - PR0CESS"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/encodedchat/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "ca.fxco.encodedchat.EncodedChat"
+    ]
+  },
+  "mixins": [
+    "encodedchat.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.8",
+    "minecraft": ">=1.19"
+  }
+}
