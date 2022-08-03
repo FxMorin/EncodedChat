@@ -21,7 +21,6 @@ import static ca.fxco.encodedchat.EncodedChat.MULTILEVEL_MODE;
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
 
-
     @Shadow
     @Final
     private List<ClientChatListener> listeners;

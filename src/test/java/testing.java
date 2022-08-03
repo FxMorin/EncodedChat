@@ -12,10 +12,11 @@ public class testing {
 
     public static void main(String[] args) {
         new EncodedChat().onInitializeClient();
+        System.out.println(" set Name |autoDetect|canDecode|                  encoded                   |                  decoded");
         for (String encodeMe : testStrings) {
             if (encodeMe.length() > 36) continue;
-            System.out.println("Testing String: `"+encodeMe+"`");
-            System.out.println(" set Name |autoDetect|canDecode|                  encoded                   |                  decoded");
+            //System.out.println("Testing String: `"+encodeMe+"`");
+            //System.out.println(" set Name |autoDetect|canDecode|                  encoded                   |                  decoded");
             for (EncodingSet set : EncodedChat.ENCODING_SETS.values()) {
                 if (set.canEncode(encodeMe)) {
                     String encoded = set.encode(encodeMe);
