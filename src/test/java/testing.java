@@ -12,7 +12,7 @@ public class testing {
     };
 
     public static void main(String[] args) {
-        new EncodedChat().onInitializeClient();
+        EncodedChat.initializeEncodingSets();
         System.out.println(" set Name |autoDetect|canDecode|                  encoded                   |                  decoded");
         for (String encodeMe : testStrings) {
             if (encodeMe.length() > 36) continue;

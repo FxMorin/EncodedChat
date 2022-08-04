@@ -30,6 +30,10 @@ public class EncodedChat implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        initializeEncodingSets();
+    }
+
+    public static void initializeEncodingSets() {
         addEncodingSet(new Base32EncodingSet());
         addEncodingSet(new Base64EncodingSet());
         addEncodingSet(new CaesarEncodingSet());
