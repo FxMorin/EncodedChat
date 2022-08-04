@@ -1,22 +1,21 @@
 package ca.fxco.encodedchat.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class EncodingActions {
 
-    private final List<EncodingAction> encodingActions;
+    private final LinkedList<EncodingAction> encodingActions;
 
     public EncodingActions() {
-        this(new ArrayList<>());
+        this(new LinkedList<>());
     }
 
-    public EncodingActions(List<EncodingAction> encodingActions) {
+    public EncodingActions(LinkedList<EncodingAction> encodingActions) {
         this.encodingActions = encodingActions;
     }
 
-    public List<EncodingAction> getEncodingActions() {
+    public LinkedList<EncodingAction> getEncodingActions() {
         return this.encodingActions;
     }
 
@@ -53,5 +52,19 @@ public class EncodingActions {
 
     public void remove(EncodingAction encodingAction) {
         this.encodingActions.remove(encodingAction);
+    }
+
+    public Set<String> getEncodingSetNames() {
+        return this.encodingActions.stream().map((action) -> action.getEncodingSet().getId())
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder actionsStr = new StringBuilder();
+        int size = this.encodingActions.size();
+        for (int i = 0; i < size; i++)
+            actionsStr.append(this.encodingActions).append(i == size - 1 ? "" : ", ");
+        return "Actions: "+actionsStr;
     }
 }

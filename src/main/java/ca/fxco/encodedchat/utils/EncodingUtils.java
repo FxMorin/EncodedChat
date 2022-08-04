@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EncodingUtils {
 
-    public final static Object[] EMPTY_ARGS = new Object[0];
+    public final static String[] EMPTY_ARGS = new String[0];
 
     public static boolean isNumeric(String str) {
         return str != null && str.matches("[0-9.]+");

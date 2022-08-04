@@ -1,21 +1,28 @@
 package ca.fxco.encodedchat;
 
 import ca.fxco.encodedchat.encodingSets.*;
+import ca.fxco.encodedchat.utils.command.EncodedChatCommand;
 import ca.fxco.encodedchat.utils.EncodingActions;
+import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.command.CommandRegistryAccess;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class EncodedChat implements ClientModInitializer {
 
+    public static final MinecraftClient MC = MinecraftClient.getInstance();
+
     /*
     TODO:
-        - Add multi-level instructions
-        - Add per-player rules/instructions
         - Add password/seed (also per-player)
         - Add server-based decoding and writing as system message (for servers that support saveminecraft)
         - Add Config for rules/instructions and options (A bit like preview hyjack)
@@ -31,6 +38,13 @@ public class EncodedChat implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         initializeEncodingSets();
+        ClientCommandRegistrationCallback.EVENT.register(new ClientCommandRegistrationCallback() {
+            @Override
+            public void register(CommandDispatcher<FabricClientCommandSource> dispatcher,
+                                 CommandRegistryAccess registryAccess) {
+                EncodedChatCommand.registerCommands(dispatcher);
+            }
+        });
     }
 
     public static void initializeEncodingSets() {
@@ -39,6 +53,10 @@ public class EncodedChat implements ClientModInitializer {
         addEncodingSet(new CaesarEncodingSet());
         addEncodingSet(new Rot13EncodingSet());
         addEncodingSet(new SeedEncodingSet());
+    }
+
+    public static Set<String> getEncodingSetNames() {
+        return ENCODING_SETS.keySet();
     }
 
     public static void addEncodingSet(EncodingSet set) {

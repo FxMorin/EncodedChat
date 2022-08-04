@@ -8,22 +8,22 @@ public class SquishEncodingSet implements EncodingSet {
     }
 
     @Override
-    public boolean canEncode(String msg, Object[] args) {
+    public boolean canEncode(String msg, String[] args) {
         return false;
     }
 
     @Override
-    public boolean hasEncoding(String msg, Object[] args) {
+    public boolean hasEncoding(String msg, String[] args) {
         return false;
     }
 
     @Override
-    public String decode(String msg, Object[] args) {
+    public String decode(String msg, String[] args) {
         return null;
     }
 
     @Override
-    public String encode(String msg, Object[] args) {
+    public String encode(String msg, String[] args) {
         return null;
     }
 }

@@ -5,13 +5,13 @@ import ca.fxco.encodedchat.encodingSets.EncodingSet;
 public class EncodingAction {
 
     private final EncodingSet encodingSet;
-    private final Object[] arguments;
+    private final String[] arguments;
 
     public EncodingAction(EncodingSet encodingSet) {
         this(encodingSet, EncodingUtils.EMPTY_ARGS);
     }
 
-    public EncodingAction(EncodingSet encodingSet, Object[] arguments) {
+    public EncodingAction(EncodingSet encodingSet, String[] arguments) {
         this.encodingSet = encodingSet;
         this.arguments = arguments;
     }
@@ -36,7 +36,12 @@ public class EncodingAction {
         return this.encodingSet;
     }
 
-    protected final Object[] getArguments() {
+    protected final String[] getArguments() {
         return this.arguments;
+    }
+
+    @Override
+    public String toString() {
+        return this.encodingSet.getId() + "["+this.arguments.length+"]";
     }
 }

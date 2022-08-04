@@ -3,11 +3,9 @@
   "minVersion": "0.8",
   "package": "ca.fxco.encodedchat.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
-  ],
   "client": [
     "ChatScreenMixin",
-    "InGameHudMixin"
+    "MessageHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

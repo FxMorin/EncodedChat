@@ -25,26 +25,26 @@ public interface EncodingSet {
      *
      * @return {@code true} if message has the encoding
      */
-    boolean hasEncoding(String msg, Object[] args);
+    boolean hasEncoding(String msg, String[] args);
 
     /**
      * Checks if a message can be encoded using this encoding set
      *
      * @return {@code true} if message can be encoded
      */
-    boolean canEncode(String msg, Object[] args);
+    boolean canEncode(String msg, String[] args);
 
     /**
      * Decodes a string that matches the encoding rules.
      *
      * @return the decoded string
      */
-    String decode(String msg, Object[] args);
+    String decode(String msg, String[] args);
 
     /**
      * Encodes a string that can be encoded
      *
      * @return the encoded string
      */
-    String encode(String msg, Object[] args);
+    String encode(String msg, String[] args);
 }
