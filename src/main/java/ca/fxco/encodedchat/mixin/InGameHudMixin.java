@@ -2,6 +2,8 @@ package ca.fxco.encodedchat.mixin;
 
 import ca.fxco.encodedchat.EncodedChat;
 import ca.fxco.encodedchat.encodingSets.EncodingSet;
+import ca.fxco.encodedchat.utils.EncodingActions;
+import ca.fxco.encodedchat.utils.EncodingUtils;
 import net.minecraft.client.gui.ClientChatListener;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.network.message.MessageSender;
@@ -15,8 +17,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
-
-import static ca.fxco.encodedchat.EncodedChat.MULTILEVEL_MODE;
 
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
@@ -40,15 +40,11 @@ public class InGameHudMixin {
         String msg = message.getString();
         String modifyMsg = msg;
         if (!msg.isEmpty()) {
-            multilevel : while(true) {
-                for (EncodingSet encodedSet : EncodedChat.ENCODING_SETS.values()) {
-                    if (encodedSet.canAutomaticallyDetect() && encodedSet.hasEncoding(msg)) {
-                        msg = encodedSet.decode(msg);
-                        if (MULTILEVEL_MODE && encodedSet.canUseMultiLevel()) continue multilevel;
-                        break multilevel;
-                    }
-                }
-                break;
+            EncodingActions encodingActions = EncodedChat.PLAYER_ENCODING_ACTIONS.get(sender.uuid());
+            if (encodingActions != null) {
+                msg = encodingActions.runDecode(msg);
+            } else {
+                msg = EncodingUtils.attemptAutomaticDecoding(msg);
             }
         }
         Text text = !msg.equals(modifyMsg) ? Text.of(msg) : message;

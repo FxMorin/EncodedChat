@@ -25,17 +25,12 @@ public class SeedEncodingSet implements EncodingSet {
     }
 
     @Override
-    public boolean canUseMultiLevel() {
-        return true;
-    }
-
-    @Override
-    public boolean canEncode(String msg) {
+    public boolean canEncode(String msg, Object[] args) {
         return msg.length() > 2 && (msg.length() + START.length() + END.length()) < 256;
     }
 
     @Override
-    public boolean hasEncoding(String msg) {
+    public boolean hasEncoding(String msg, Object[] args) {
         return msg.startsWith(START) &&
                 msg.endsWith(END) &&
                 EncodingUtils.isNumeric(msg.substring(START.length(),START.length()+2)) &&
@@ -43,7 +38,7 @@ public class SeedEncodingSet implements EncodingSet {
     }
 
     @Override
-    public String decode(String msg) {
+    public String decode(String msg, Object[] args) {
         int startLength = START.length();
         int seed = Integer.parseInt(msg.substring(startLength, startLength+2));
         List<Character> chars = msg.substring(startLength+2, msg.length()-1).chars()
@@ -58,7 +53,7 @@ public class SeedEncodingSet implements EncodingSet {
     }
 
     @Override
-    public String encode(String msg) {
+    public String encode(String msg, Object[] args) {
         int seed = Random.create().nextBetween(10, 99);
         List<Character> chars = msg.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
         StringBuilder encodedMessage = new StringBuilder();

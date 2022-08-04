@@ -11,28 +11,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ChatScreen.class)
 public class ChatScreenMixin {
 
-    /*
-    TODO:
-        - Add multi-level encoding support
-     */
-
 
     @Inject(
             method = "normalize",
             at = @At("HEAD"),
             cancellable = true
     )
-    public void normalize(String chatText, CallbackInfoReturnable<String> cir) {
-        if (!chatText.isEmpty()) {
-            boolean modified = false;
-            for (EncodingSet encodedSet : EncodedChat.ENCODING_SETS.values()) {
-                if (encodedSet.canAutomaticallyDetect() && encodedSet.canEncode(chatText)) {
-                    chatText = encodedSet.encode(chatText);
-                    modified = true;
-                    break;
-                }
-            }
-            if (modified) cir.setReturnValue(chatText);
-        }
+    public void onBeforeMessage(String chatText, CallbackInfoReturnable<String> cir) {
+        if (!chatText.isEmpty()) cir.setReturnValue(EncodedChat.SELF_ENCODING_ACTIONS.runEncode(chatText));
     }
 }

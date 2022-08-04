@@ -18,17 +18,17 @@ public class CaesarEncodingSet implements EncodingSet {
     }
 
     @Override
-    public boolean canEncode(String msg) {
+    public boolean canEncode(String msg, Object[] args) {
         return msg.equals(msg.toLowerCase());
     }
 
     @Override
-    public boolean hasEncoding(String msg) {
+    public boolean hasEncoding(String msg, Object[] args) {
         return EncodingUtils.isNumeric(msg.substring(0,1)) && msg.equals(msg.toLowerCase());
     }
 
     @Override
-    public String decode(String msg) {
+    public String decode(String msg, Object[] args) {
         int shift = Integer.parseInt(msg.substring(0,1));
         String encodedMessage = msg.substring(1);
         StringBuilder decodedMessage = new StringBuilder();
@@ -44,7 +44,7 @@ public class CaesarEncodingSet implements EncodingSet {
     }
 
     @Override
-    public String encode(String msg) {
+    public String encode(String msg, Object[] args) {
         int shift = rand.nextBetween(2, 9);
         StringBuilder encodedMessage = new StringBuilder();
         for (int i = 0; i < msg.length(); i++) {

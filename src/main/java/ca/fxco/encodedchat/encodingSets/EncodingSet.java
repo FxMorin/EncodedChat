@@ -21,39 +21,30 @@ public interface EncodingSet {
     }
 
     /**
-     * If this encoding set can be tried again on the results, used if you encode the message multiple times
-     *
-     * @return true if hasEncoding() won't pickup the results of decode()
-     */
-    default boolean canUseMultiLevel() {
-        return false;
-    }
-
-    /**
      * Checks if a message matches the encoding rules.
      *
      * @return {@code true} if message has the encoding
      */
-    boolean hasEncoding(String msg);
+    boolean hasEncoding(String msg, Object[] args);
 
     /**
      * Checks if a message can be encoded using this encoding set
      *
      * @return {@code true} if message can be encoded
      */
-    boolean canEncode(String msg);
+    boolean canEncode(String msg, Object[] args);
 
     /**
      * Decodes a string that matches the encoding rules.
      *
      * @return the decoded string
      */
-    String decode(String msg);
+    String decode(String msg, Object[] args);
 
     /**
      * Encodes a string that can be encoded
      *
      * @return the encoded string
      */
-    String encode(String msg);
+    String encode(String msg, Object[] args);
 }

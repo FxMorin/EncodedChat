@@ -15,27 +15,22 @@ public class Base32EncodingSet implements EncodingSet {
     }
 
     @Override
-    public boolean canUseMultiLevel() {
+    public boolean canEncode(String msg, Object[] args) {
         return true;
     }
 
     @Override
-    public boolean canEncode(String msg) {
-        return true;
-    }
-
-    @Override
-    public boolean hasEncoding(String msg) {
+    public boolean hasEncoding(String msg, Object[] args) {
         return pattern.matcher(msg).find();
     }
 
     @Override
-    public String decode(String msg) {
+    public String decode(String msg, Object[] args) {
         return new String(base32.decode(msg));
     }
 
     @Override
-    public String encode(String msg) {
+    public String encode(String msg, Object[] args) {
         return base32.encodeAsString(msg.getBytes());
     }
 }

@@ -1,13 +1,13 @@
 package ca.fxco.encodedchat;
 
 import ca.fxco.encodedchat.encodingSets.*;
+import ca.fxco.encodedchat.utils.EncodingActions;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class EncodedChat implements ClientModInitializer {
@@ -23,14 +23,13 @@ public class EncodedChat implements ClientModInitializer {
         - Make it easier for other mods to add there own encoding sets (maybe through an entrypoint)
      */
 
-    // Using multiple encoding sets in a row (testing only, will be replaced by instruction list)
-    public final static boolean MULTILEVEL_MODE = false;
-
     public final static HashMap<String, EncodingSet> ENCODING_SETS = new HashMap<>();
+
+    public final static EncodingActions SELF_ENCODING_ACTIONS = new EncodingActions();
+    public final static HashMap<UUID, EncodingActions> PLAYER_ENCODING_ACTIONS = new HashMap<>();
 
     @Override
     public void onInitializeClient() {
-        addEncodingSet(new Base32EncodingSet());
         addEncodingSet(new Base32EncodingSet());
         addEncodingSet(new Base64EncodingSet());
         addEncodingSet(new CaesarEncodingSet());
