@@ -14,14 +14,14 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.command.CommandRegistryAccess;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Set;
 
 @Environment(EnvType.CLIENT)
 public class EncodedChat implements ClientModInitializer {
-
-    public static final MinecraftClient MC = MinecraftClient.getInstance();
 
     /*
     TODO:
@@ -31,9 +31,11 @@ public class EncodedChat implements ClientModInitializer {
         - Make it easier for other mods to add there own encoding sets (maybe through an entrypoint)
      */
 
+    public static final MinecraftClient MC = MinecraftClient.getInstance();
     public final static String MODID = "encodedchat";
-    public final static HashMap<String, EncodingSet> ENCODING_SETS = new HashMap<>();
 
+    public final static Logger LOGGER = LoggerFactory.getLogger(MODID);
+    public final static HashMap<String, EncodingSet> ENCODING_SETS = new HashMap<>();
     public final static EncodingActions SELF_ENCODING_ACTIONS = new EncodingActions();
 
     private static ConfigManager configManager;

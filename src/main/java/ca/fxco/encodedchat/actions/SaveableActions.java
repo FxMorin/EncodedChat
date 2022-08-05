@@ -13,7 +13,7 @@ import java.util.Map;
 public class SaveableActions {
 
     public static LinkedHashMap<String, String[]> toSaveableActions(EncodingActions encodingActions) {
-        LinkedHashMap<String,String[]> saveableActions = new LinkedHashMap<>();
+        LinkedHashMap<String, String[]> saveableActions = new LinkedHashMap<>();
         for (EncodingAction action : encodingActions.getEncodingActions())
             saveableActions.put(action.getEncodingSet().getId(), action.getArguments().getOriginalInput());
         return saveableActions.size() > 0 ? saveableActions : null;
@@ -29,6 +29,10 @@ public class SaveableActions {
                     ParsedArguments parsedArguments = set.createArguments(args.toArray(String[]::new));
                     if (parsedArguments.validateArguments()) {
                         encodingActions.add(new EncodingAction(set, parsedArguments.parseArguments()));
+                    } else {
+                        EncodedChat.LOGGER.warn(
+                                "Unable to load Action `"+set.getId()+"` due to invalid arguments `"+args+"`"
+                        );
                     }
                 } else {
                     encodingActions.add(new EncodingAction(set));
