@@ -23,7 +23,7 @@ public class ConfigManager {
     private final Yaml yaml;
     private final Yaml playerActionsYaml;
 
-    public ConfigManager(String modId) {
+    public ConfigManager(String modId, boolean testing) {
         DumperOptions options = new DumperOptions();
         options.setIndent(2);
         options.setPrettyFlow(true);
@@ -31,7 +31,9 @@ public class ConfigManager {
         SmartRepresenter smartRepresenter = new SmartRepresenter();
         this.yaml = new Yaml(new Constructor(ECConfig.class), smartRepresenter, options);
         this.playerActionsYaml = new Yaml();
-        Path configDir = FabricLoader.getInstance().getConfigDir();
+        Path configDir = testing ?
+                Path.of(System.getProperty("user.dir")).resolve("run").resolve("config") :
+                FabricLoader.getInstance().getConfigDir();
         this.configPath = configDir.resolve(modId + ".yaml");
         this.playerActionsPath = configDir.resolve(modId + "-players.yaml");
     }

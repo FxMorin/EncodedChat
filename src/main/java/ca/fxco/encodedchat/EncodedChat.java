@@ -1,6 +1,5 @@
 package ca.fxco.encodedchat;
 
-import ca.fxco.encodedchat.actions.EncodingAction;
 import ca.fxco.encodedchat.config.ConfigManager;
 import ca.fxco.encodedchat.config.ECConfig;
 import ca.fxco.encodedchat.config.PlayerActions;
@@ -18,7 +17,6 @@ import net.minecraft.command.CommandRegistryAccess;
 
 import java.util.HashMap;
 import java.util.Set;
-import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class EncodedChat implements ClientModInitializer {
@@ -38,15 +36,18 @@ public class EncodedChat implements ClientModInitializer {
 
     public final static EncodingActions SELF_ENCODING_ACTIONS = new EncodingActions();
 
-    private static final ConfigManager configManager = new ConfigManager(MODID);
+    private static ConfigManager configManager;
     public static ECConfig CONFIG;
     public static PlayerActions PLAYER_ACTIONS;
 
     @Override
     public void onInitializeClient() {
         initializeEncodingSets();
-        CONFIG = configManager.loadConfig();
-        PLAYER_ACTIONS = configManager.loadPlayerActions();
+        initializeConfig(false);
+        initializeClientCommands();
+    }
+
+    public static void initializeClientCommands() {
         ClientCommandRegistrationCallback.EVENT.register(new ClientCommandRegistrationCallback() {
             @Override
             public void register(CommandDispatcher<FabricClientCommandSource> dispatcher,
@@ -54,37 +55,12 @@ public class EncodedChat implements ClientModInitializer {
                 EncodedChatCommand.registerCommands(dispatcher);
             }
         });
+    }
 
-        // Testing
-        PLAYER_ACTIONS.putPlayerAction(new UUID(1L,2L),new EncodingActions());
-        EncodingActions encodingActions = new EncodingActions();
-        encodingActions.add(new EncodingAction(ENCODING_SETS.get("Base64")));
-        encodingActions.add(new EncodingAction(ENCODING_SETS.get("Seed")));
-        PLAYER_ACTIONS.putPlayerAction(new UUID(5L,9L), encodingActions);
-        encodingActions = new EncodingActions();
-        encodingActions.add(new EncodingAction(ENCODING_SETS.get("Base32")));
-        EncodingSet seedEncodingSet = ENCODING_SETS.get("Seed");
-        encodingActions.add(new EncodingAction(
-                seedEncodingSet,
-                seedEncodingSet.createArguments(new String[]{"25","67"}).parseArguments())
-        );
-        PLAYER_ACTIONS.putPlayerAction(new UUID(25L, 72L), encodingActions);
-        encodingActions = new EncodingActions();
-        encodingActions.add(new EncodingAction(ENCODING_SETS.get("Rot13")));
-        PLAYER_ACTIONS.putPlayerAction(new UUID(50L, 12L), encodingActions);
-        encodingActions = new EncodingActions();
-        encodingActions.add(new EncodingAction(ENCODING_SETS.get("Caesar")));
-        EncodingSet replaceEncodingSet = ENCODING_SETS.get("Replace");
-        encodingActions.add(new EncodingAction(
-                replaceEncodingSet,
-                replaceEncodingSet.createArguments(
-                        new String[]{"I","He","angry","happy","hate","love","kill","punch"}
-                ).parseArguments())
-        );
-        encodingActions.add(new EncodingAction(ENCODING_SETS.get("Rot13")));
-        encodingActions.add(new EncodingAction(ENCODING_SETS.get("Base32")));
-        PLAYER_ACTIONS.putPlayerAction(new UUID(999L, 999L), encodingActions);
-        configManager.savePlayerActions(PLAYER_ACTIONS);
+    public static void initializeConfig(boolean testing) {
+        configManager = new ConfigManager(MODID, testing);
+        CONFIG = configManager.loadConfig();
+        PLAYER_ACTIONS = configManager.loadPlayerActions();
     }
 
     public static void initializeEncodingSets() {
