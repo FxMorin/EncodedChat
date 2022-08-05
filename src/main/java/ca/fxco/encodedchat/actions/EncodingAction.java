@@ -1,17 +1,19 @@
-package ca.fxco.encodedchat.utils;
+package ca.fxco.encodedchat.actions;
 
 import ca.fxco.encodedchat.encodingSets.EncodingSet;
+
+import static ca.fxco.encodedchat.utils.EncodingUtils.NO_ARGS;
 
 public class EncodingAction {
 
     private final EncodingSet encodingSet;
-    private final String[] arguments;
+    private final ParsedArguments arguments;
 
     public EncodingAction(EncodingSet encodingSet) {
-        this(encodingSet, EncodingUtils.EMPTY_ARGS);
+        this(encodingSet, NO_ARGS);
     }
 
-    public EncodingAction(EncodingSet encodingSet, String[] arguments) {
+    public EncodingAction(EncodingSet encodingSet, ParsedArguments arguments) {
         this.encodingSet = encodingSet;
         this.arguments = arguments;
     }
@@ -36,12 +38,12 @@ public class EncodingAction {
         return this.encodingSet;
     }
 
-    protected final String[] getArguments() {
+    protected final ParsedArguments getArguments() {
         return this.arguments;
     }
 
     @Override
     public String toString() {
-        return this.encodingSet.getId() + "["+this.arguments.length+"]";
+        return this.encodingSet.getId() + "["+this.arguments.size()+"]";
     }
 }

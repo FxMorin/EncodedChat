@@ -1,7 +1,7 @@
 package ca.fxco.encodedchat.mixin;
 
 import ca.fxco.encodedchat.EncodedChat;
-import ca.fxco.encodedchat.utils.EncodingActions;
+import ca.fxco.encodedchat.actions.EncodingActions;
 import ca.fxco.encodedchat.utils.EncodingUtils;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;

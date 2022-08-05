@@ -2,7 +2,7 @@ package ca.fxco.encodedchat;
 
 import ca.fxco.encodedchat.encodingSets.*;
 import ca.fxco.encodedchat.utils.command.EncodedChatCommand;
-import ca.fxco.encodedchat.utils.EncodingActions;
+import ca.fxco.encodedchat.actions.EncodingActions;
 import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -23,7 +23,6 @@ public class EncodedChat implements ClientModInitializer {
 
     /*
     TODO:
-        - Add password/seed (also per-player)
         - Add server-based decoding and writing as system message (for servers that support saveminecraft)
         - Add Config for rules/instructions and options (A bit like preview hyjack)
         - Add No-Chat-Reports detection to disable mod (if option enabled, needs support)

@@ -1,4 +1,4 @@
-package ca.fxco.encodedchat.utils;
+package ca.fxco.encodedchat.actions;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -1,6 +1,7 @@
 import ca.fxco.encodedchat.EncodedChat;
 import ca.fxco.encodedchat.encodingSets.*;
-import ca.fxco.encodedchat.utils.EncodingUtils;
+
+import static ca.fxco.encodedchat.utils.EncodingUtils.NO_ARGS;
 
 public class testing {
 
@@ -19,10 +20,10 @@ public class testing {
             //System.out.println("Testing String: `"+encodeMe+"`");
             //System.out.println(" set Name |autoDetect|canDecode|                  encoded                   |                  decoded");
             for (EncodingSet set : EncodedChat.ENCODING_SETS.values()) {
-                if (set.canEncode(encodeMe, EncodingUtils.EMPTY_ARGS)) {
-                    String encoded = set.encode(encodeMe, EncodingUtils.EMPTY_ARGS);
-                    boolean hasEncoding = set.hasEncoding(encoded, EncodingUtils.EMPTY_ARGS);
-                    String decoded = hasEncoding ? set.decode(encoded, EncodingUtils.EMPTY_ARGS) : "";
+                if (set.canEncode(encodeMe, NO_ARGS)) {
+                    String encoded = set.encode(encodeMe, NO_ARGS);
+                    boolean hasEncoding = set.hasEncoding(encoded, NO_ARGS);
+                    String decoded = hasEncoding ? set.decode(encoded, NO_ARGS) : "";
                     System.out.printf("%10s|%10b|%9b|%44s|%s%n",
                             set.getId(),
                             set.canAutomaticallyDetect(),

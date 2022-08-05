@@ -1,9 +1,10 @@
 package ca.fxco.encodedchat.utils.command;
 
 import ca.fxco.encodedchat.EncodedChat;
-import ca.fxco.encodedchat.utils.EncodingAction;
-import ca.fxco.encodedchat.utils.EncodingActions;
-import ca.fxco.encodedchat.utils.EncodingUtils;
+import ca.fxco.encodedchat.actions.ParsedArguments;
+import ca.fxco.encodedchat.encodingSets.EncodingSet;
+import ca.fxco.encodedchat.actions.EncodingAction;
+import ca.fxco.encodedchat.actions.EncodingActions;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -16,6 +17,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 
 public class EncodedChatCommand {
+
+    // TODO: Make the feedback message actually useful
 
     public static final String PREFIX = "encodedchat";
 
@@ -97,10 +100,16 @@ public class EncodedChatCommand {
             context.getSource().sendError(Text.of("Type `"+type+"` does not exist!"));
             return 0;
         }
+        EncodingSet set = EncodedChat.ENCODING_SETS.get(type);
+        ParsedArguments parsedArguments = set.createArguments();
         String[] arguments = hasArguments ?
                 StringArgumentType.getString(context, "arguments").split(" ") :
-                EncodingUtils.EMPTY_ARGS;
-        encodingActions.add(new EncodingAction(EncodedChat.ENCODING_SETS.get(type), arguments));
+                null;
+        if (!parsedArguments.validateArguments(arguments)) {
+            context.getSource().sendError(Text.of("Arguments used are not valid for this type!"));
+            return 0;
+        }
+        encodingActions.add(new EncodingAction(set, parsedArguments.parseArguments(arguments)));
         context.getSource().sendFeedback(Text.of("Action has been added successfully!"));
         return 1;
     }

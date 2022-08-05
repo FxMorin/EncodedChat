@@ -1,5 +1,9 @@
 package ca.fxco.encodedchat.encodingSets;
 
+import ca.fxco.encodedchat.actions.ParsedArguments;
+
+import static ca.fxco.encodedchat.utils.EncodingUtils.NO_ARGS;
+
 /**
  * An interface for encoding sets
  */
@@ -21,30 +25,39 @@ public interface EncodingSet {
     }
 
     /**
+     * Creates a ParsedArguments for the EncodingSet
+     *
+     * @return the Parsed Argument using the arguments provided
+     */
+    default ParsedArguments createArguments() {
+        return NO_ARGS;
+    }
+
+    /**
      * Checks if a message matches the encoding rules.
      *
      * @return {@code true} if message has the encoding
      */
-    boolean hasEncoding(String msg, String[] args);
+    boolean hasEncoding(String msg, ParsedArguments parsedArgs);
 
     /**
      * Checks if a message can be encoded using this encoding set
      *
      * @return {@code true} if message can be encoded
      */
-    boolean canEncode(String msg, String[] args);
+    boolean canEncode(String msg, ParsedArguments parsedArgs);
 
     /**
      * Decodes a string that matches the encoding rules.
      *
      * @return the decoded string
      */
-    String decode(String msg, String[] args);
+    String decode(String msg, ParsedArguments parsedArgs);
 
     /**
      * Encodes a string that can be encoded
      *
      * @return the encoded string
      */
-    String encode(String msg, String[] args);
+    String encode(String msg, ParsedArguments parsedArgs);
 }

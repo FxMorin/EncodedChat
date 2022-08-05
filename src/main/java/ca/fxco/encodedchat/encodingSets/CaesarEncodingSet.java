@@ -1,5 +1,6 @@
 package ca.fxco.encodedchat.encodingSets;
 
+import ca.fxco.encodedchat.actions.ParsedArguments;
 import ca.fxco.encodedchat.utils.EncodingUtils;
 import net.minecraft.util.math.random.Random;
 
@@ -18,17 +19,17 @@ public class CaesarEncodingSet implements EncodingSet {
     }
 
     @Override
-    public boolean canEncode(String msg, String[] args) {
+    public boolean canEncode(String msg, ParsedArguments args) {
         return msg.equals(msg.toLowerCase());
     }
 
     @Override
-    public boolean hasEncoding(String msg, String[] args) {
+    public boolean hasEncoding(String msg, ParsedArguments args) {
         return EncodingUtils.isNumeric(msg.substring(0,1)) && msg.equals(msg.toLowerCase());
     }
 
     @Override
-    public String decode(String msg, String[] args) {
+    public String decode(String msg, ParsedArguments args) {
         int shift = Integer.parseInt(msg.substring(0,1));
         String encodedMessage = msg.substring(1);
         StringBuilder decodedMessage = new StringBuilder();
@@ -44,7 +45,7 @@ public class CaesarEncodingSet implements EncodingSet {
     }
 
     @Override
-    public String encode(String msg, String[] args) {
+    public String encode(String msg, ParsedArguments args) {
         int shift = rand.nextBetween(2, 9);
         StringBuilder encodedMessage = new StringBuilder();
         for (int i = 0; i < msg.length(); i++) {

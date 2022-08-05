@@ -1,5 +1,7 @@
 package ca.fxco.encodedchat.encodingSets;
 
+import ca.fxco.encodedchat.actions.ParsedArguments;
+
 import java.util.Base64;
 import java.util.regex.Pattern;
 
@@ -13,22 +15,22 @@ public class Base64EncodingSet implements EncodingSet {
     }
 
     @Override
-    public boolean canEncode(String msg, String[] args) {
+    public boolean canEncode(String msg, ParsedArguments args) {
         return true;
     }
 
     @Override
-    public boolean hasEncoding(String msg, String[] args) {
+    public boolean hasEncoding(String msg, ParsedArguments args) {
         return pattern.matcher(msg).find();
     }
 
     @Override
-    public String decode(String msg, String[] args) {
+    public String decode(String msg, ParsedArguments args) {
         return new String(Base64.getDecoder().decode(msg));
     }
 
     @Override
-    public String encode(String msg, String[] args) {
+    public String encode(String msg, ParsedArguments args) {
         return Base64.getEncoder().encodeToString(msg.getBytes());
     }
 }

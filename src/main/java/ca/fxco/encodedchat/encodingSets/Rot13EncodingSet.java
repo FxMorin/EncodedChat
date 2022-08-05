@@ -1,5 +1,7 @@
 package ca.fxco.encodedchat.encodingSets;
 
+import ca.fxco.encodedchat.actions.ParsedArguments;
+
 public class Rot13EncodingSet implements EncodingSet {
 
     @Override
@@ -13,22 +15,22 @@ public class Rot13EncodingSet implements EncodingSet {
     }
 
     @Override
-    public boolean canEncode(String msg, String[] args) {
+    public boolean canEncode(String msg, ParsedArguments args) {
         return true;
     }
 
     @Override
-    public boolean hasEncoding(String msg, String[] args) {
+    public boolean hasEncoding(String msg, ParsedArguments args) {
         return true;
     }
 
     @Override
-    public String decode(String msg, String[] args) {
+    public String decode(String msg, ParsedArguments args) {
         return rot13(msg);
     }
 
     @Override
-    public String encode(String msg, String[] args) {
+    public String encode(String msg, ParsedArguments args) {
         return rot13(msg);
     }
 

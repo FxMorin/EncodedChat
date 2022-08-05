@@ -1,5 +1,6 @@
 package ca.fxco.encodedchat.encodingSets;
 
+import ca.fxco.encodedchat.actions.ParsedArguments;
 import org.apache.commons.codec.binary.Base32;
 
 import java.util.regex.Pattern;
@@ -15,22 +16,22 @@ public class Base32EncodingSet implements EncodingSet {
     }
 
     @Override
-    public boolean canEncode(String msg, String[] args) {
+    public boolean canEncode(String msg, ParsedArguments args) {
         return true;
     }
 
     @Override
-    public boolean hasEncoding(String msg, String[] args) {
+    public boolean hasEncoding(String msg, ParsedArguments args) {
         return pattern.matcher(msg).find();
     }
 
     @Override
-    public String decode(String msg, String[] args) {
+    public String decode(String msg, ParsedArguments args) {
         return new String(base32.decode(msg));
     }
 
     @Override
-    public String encode(String msg, String[] args) {
+    public String encode(String msg, ParsedArguments args) {
         return base32.encodeAsString(msg.getBytes());
     }
 }

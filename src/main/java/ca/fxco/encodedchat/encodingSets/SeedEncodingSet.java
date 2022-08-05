@@ -1,8 +1,10 @@
 package ca.fxco.encodedchat.encodingSets;
 
+import ca.fxco.encodedchat.actions.ParsedArguments;
 import ca.fxco.encodedchat.utils.EncodingUtils;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.math.random.Xoroshiro128PlusPlusRandom;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,6 +15,9 @@ public class SeedEncodingSet implements EncodingSet {
      *  This encoding is a shuffle using a 2 digit seed.
      *  The seed gets used in the random to get the reverse of the order.
      *  Padding: S33D[10-99]<shuffled characters>|
+     *
+     *  Arguments:
+     *  1) seed [Integer] - If using the integer as part of the arguments, it will not be included in the message
      */
 
     private final static Xoroshiro128PlusPlusRandom rand = new Xoroshiro128PlusPlusRandom(0);
@@ -25,36 +30,38 @@ public class SeedEncodingSet implements EncodingSet {
     }
 
     @Override
-    public boolean canEncode(String msg, String[] args) {
+    public boolean canEncode(String msg, ParsedArguments args) {
         return msg.length() > 2 && (msg.length() + START.length() + END.length()) < 256;
     }
 
     @Override
-    public boolean hasEncoding(String msg, String[] args) {
+    public boolean hasEncoding(String msg, ParsedArguments args) {
         return msg.startsWith(START) &&
                 msg.endsWith(END) &&
-                EncodingUtils.isNumeric(msg.substring(START.length(),START.length()+2)) &&
+                (args.size() == 1 || EncodingUtils.isNumeric(msg.substring(START.length(),START.length()+2))) &&
                 msg.length() > START.length() + 4;
     }
 
     @Override
-    public String decode(String msg, String[] args) {
+    public String decode(String msg, ParsedArguments args) {
         int startLength = START.length();
-        int seed = Integer.parseInt(msg.substring(startLength, startLength+2));
-        List<Character> chars = msg.substring(startLength+2, msg.length()-1).chars()
+        boolean hasInternalSeed = args.size() == 1;
+        int seed = hasInternalSeed ? (int)args.get(0) : Integer.parseInt(msg.substring(startLength, startLength + 2));
+        List<Character> chars = msg.substring(startLength + (hasInternalSeed ? 0 : 2), msg.length() - 1).chars()
                 .mapToObj(c -> (char)c).collect(Collectors.toList());
         LinkedList<Character> decodedMessage = new LinkedList<>();
         int count = 0;
         while (chars.size() > 0) {
-            rand.setSeed((chars.size()-1)+seed);
+            rand.setSeed((chars.size() - 1) + seed);
             decodedMessage.add(rand.nextInt(++count), chars.remove(0));
         }
         return decodedMessage.stream().map(String::valueOf).collect(Collectors.joining());
     }
 
     @Override
-    public String encode(String msg, String[] args) {
-        int seed = Random.create().nextBetween(10, 99);
+    public String encode(String msg, ParsedArguments args) {
+        boolean hasInternalSeed = args.size() == 1;
+        int seed = hasInternalSeed ? (int)args.get(0) : Random.create().nextBetween(10, 99);
         List<Character> chars = msg.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
         StringBuilder encodedMessage = new StringBuilder();
         int count = 0;
@@ -62,6 +69,38 @@ public class SeedEncodingSet implements EncodingSet {
             rand.setSeed(count+++seed);
             encodedMessage.insert(0, chars.remove(rand.nextInt(chars.size())));
         }
-        return START+seed+encodedMessage+END;
+        return START + (hasInternalSeed ? "" : seed) + encodedMessage + END;
+    }
+
+    @Override
+    public ParsedArguments createArguments() {
+        return new SeedArguments();
+    }
+
+    static class SeedArguments implements ParsedArguments {
+
+        private Integer seed = null;
+
+        @Override
+        public boolean validateArguments(@Nullable String[] args) {
+            if (args == null || args.length == 0) return true;
+            return args.length == 1 && EncodingUtils.isNumeric(args[0]);
+        }
+
+        @Override
+        public ParsedArguments parseArguments(String[] args) {
+            this.seed = Integer.parseInt(args[0]);
+            return this;
+        }
+
+        @Override
+        public Object get(int index) {
+            return seed;
+        }
+
+        @Override
+        public int size() {
+            return seed == null ? 0 : 1;
+        }
     }
 }
