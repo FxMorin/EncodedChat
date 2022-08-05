@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class EncodingActions {
 
-    private LinkedList<EncodingAction> encodingActions;
+    private final LinkedList<EncodingAction> encodingActions;
 
     public EncodingActions() {
         this(new LinkedList<>());
@@ -66,9 +66,5 @@ public class EncodingActions {
 
     public LinkedList<EncodingAction> getEncodingActions() {
         return this.encodingActions;
-    }
-
-    public void setEncodingActions(LinkedList<EncodingAction> encodingActions) {
-        this.encodingActions = encodingActions;
     }
 }

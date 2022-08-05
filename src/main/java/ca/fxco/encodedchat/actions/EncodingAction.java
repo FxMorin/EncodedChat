@@ -6,8 +6,8 @@ import static ca.fxco.encodedchat.utils.EncodingUtils.NO_ARGS;
 
 public class EncodingAction {
 
-    private EncodingSet encodingSet;
-    private ParsedArguments arguments;
+    private final EncodingSet encodingSet;
+    private final ParsedArguments arguments;
 
     public EncodingAction(EncodingSet encodingSet) {
         this(encodingSet, NO_ARGS);
@@ -40,14 +40,6 @@ public class EncodingAction {
 
     public final ParsedArguments getArguments() {
         return this.arguments;
-    }
-
-    public final void setEncodingSet(EncodingSet set) {
-        this.encodingSet = set;
-    }
-
-    public final void setArguments(ParsedArguments parsedArgs) {
-        this.arguments = parsedArgs;
     }
 
     @Override
