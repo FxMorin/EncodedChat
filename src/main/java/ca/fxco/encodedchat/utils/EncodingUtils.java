@@ -12,6 +12,10 @@ public class EncodingUtils {
 
     public final static ParsedArguments NO_ARGS = new NoArguments();
 
+    public static boolean isInvalidSetType(String id) {
+        return !EncodedChat.ENCODING_SETS.containsKey(id);
+    }
+
     public static boolean isNumeric(String str) {
         return str != null && str.matches("^-*[\\d.]+$");
     }

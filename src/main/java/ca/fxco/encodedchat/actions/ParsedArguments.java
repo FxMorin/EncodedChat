@@ -1,14 +1,14 @@
 package ca.fxco.encodedchat.actions;
 
-import org.jetbrains.annotations.Nullable;
-
 public interface ParsedArguments {
 
-    boolean validateArguments(@Nullable String[] args);
+    boolean validateArguments();
 
-    ParsedArguments parseArguments(String[] args);
+    ParsedArguments parseArguments();
 
     Object get(int index);
+
+    String[] getOriginalInput();
 
     int size();
 }

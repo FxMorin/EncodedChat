@@ -5,6 +5,7 @@ import ca.fxco.encodedchat.actions.ParsedArguments;
 import ca.fxco.encodedchat.encodingSets.EncodingSet;
 import ca.fxco.encodedchat.actions.EncodingAction;
 import ca.fxco.encodedchat.actions.EncodingActions;
+import ca.fxco.encodedchat.utils.EncodingUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -52,7 +53,7 @@ public class EncodedChatCommand {
             context.getSource().sendError(Text.of("Player was not found!"));
             return 0;
         }
-        EncodingActions encodingActions = EncodedChat.PLAYER_ENCODING_ACTIONS.get(player.getUuid());
+        EncodingActions encodingActions = EncodedChat.PLAYER_ACTIONS.getPlayerAction(player.getUuid());
         if (encodingActions == null) {
             context.getSource().sendFeedback(Text.of("Player does not have any actions to clear!"));
             return 1;
@@ -68,7 +69,7 @@ public class EncodedChatCommand {
             context.getSource().sendError(Text.of("Player was not found!"));
             return 0;
         }
-        EncodingActions encodingActions = EncodedChat.PLAYER_ENCODING_ACTIONS.get(player.getUuid());
+        EncodingActions encodingActions = EncodedChat.PLAYER_ACTIONS.getPlayerAction(player.getUuid());
         if (encodingActions == null) {
             context.getSource().sendFeedback(Text.of("Player does not have any actions to remove!"));
             return 1;
@@ -79,7 +80,7 @@ public class EncodedChatCommand {
             return 0;
         }
         if (encodingActions.getEncodingActions().size() == 1) {
-            EncodedChat.PLAYER_ENCODING_ACTIONS.remove(player.getUuid());
+            EncodedChat.PLAYER_ACTIONS.removePlayerAction(player.getUuid());
             context.getSource().sendFeedback(Text.of("Removed action from player!"));
             return 1;
         }
@@ -94,22 +95,22 @@ public class EncodedChatCommand {
             context.getSource().sendError(Text.of("Player was not found!"));
             return 0;
         }
-        EncodingActions encodingActions = EncodedChat.PLAYER_ENCODING_ACTIONS.getOrDefault(player.getUuid(), new EncodingActions());
+        EncodingActions encodingActions = EncodedChat.PLAYER_ACTIONS.PLAYER_ENCODING_ACTIONS.getOrDefault(player.getUuid(), new EncodingActions());
         String type = StringArgumentType.getString(context,"type");
-        if (!EncodedChat.ENCODING_SETS.containsKey(type)) {
+        if (EncodingUtils.isInvalidSetType(type)) {
             context.getSource().sendError(Text.of("Type `"+type+"` does not exist!"));
             return 0;
         }
         EncodingSet set = EncodedChat.ENCODING_SETS.get(type);
-        ParsedArguments parsedArguments = set.createArguments();
         String[] arguments = hasArguments ?
                 StringArgumentType.getString(context, "arguments").split(" ") :
                 null;
-        if (!parsedArguments.validateArguments(arguments)) {
+        ParsedArguments parsedArguments = set.createArguments(arguments);
+        if (!parsedArguments.validateArguments()) {
             context.getSource().sendError(Text.of("Arguments used are not valid for this type!"));
             return 0;
         }
-        encodingActions.add(new EncodingAction(set, parsedArguments.parseArguments(arguments)));
+        encodingActions.add(new EncodingAction(set, parsedArguments.parseArguments()));
         context.getSource().sendFeedback(Text.of("Action has been added successfully!"));
         return 1;
     }
@@ -120,7 +121,7 @@ public class EncodedChatCommand {
             context.getSource().sendError(Text.of("Player was not found!"));
             return 0;
         }
-        EncodingActions encodingActions = EncodedChat.PLAYER_ENCODING_ACTIONS.get(player.getUuid());
+        EncodingActions encodingActions = EncodedChat.PLAYER_ACTIONS.getPlayerAction(player.getUuid());
         context.getSource().sendFeedback(Text.of("Player " + player.getEntityName() + (
                 encodingActions == null ?
                         " does not have any set actions" :

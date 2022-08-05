@@ -3,17 +3,22 @@ package ca.fxco.encodedchat.actions;
 public class NoArguments implements ParsedArguments {
 
     @Override
-    public boolean validateArguments(String[] args) {
-        return args.length == 0;
+    public boolean validateArguments() {
+        return true;
     }
 
     @Override
-    public ParsedArguments parseArguments(String[] args) {
+    public ParsedArguments parseArguments() {
         return this;
     }
 
     @Override
     public Object get(int index) {
+        return null;
+    }
+
+    @Override
+    public String[] getOriginalInput() {
         return null;
     }
 

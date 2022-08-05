@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class EncodingActions {
 
-    private final LinkedList<EncodingAction> encodingActions;
+    private LinkedList<EncodingAction> encodingActions;
 
     public EncodingActions() {
         this(new LinkedList<>());
@@ -13,10 +13,6 @@ public class EncodingActions {
 
     public EncodingActions(LinkedList<EncodingAction> encodingActions) {
         this.encodingActions = encodingActions;
-    }
-
-    public LinkedList<EncodingAction> getEncodingActions() {
-        return this.encodingActions;
     }
 
     public void clearActions() {
@@ -66,5 +62,13 @@ public class EncodingActions {
         for (int i = 0; i < size; i++)
             actionsStr.append(this.encodingActions).append(i == size - 1 ? "" : ", ");
         return "Actions: "+actionsStr;
+    }
+
+    public LinkedList<EncodingAction> getEncodingActions() {
+        return this.encodingActions;
+    }
+
+    public void setEncodingActions(LinkedList<EncodingAction> encodingActions) {
+        this.encodingActions = encodingActions;
     }
 }

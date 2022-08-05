@@ -1,6 +1,7 @@
 package ca.fxco.encodedchat.encodingSets;
 
 import ca.fxco.encodedchat.actions.ParsedArguments;
+import org.jetbrains.annotations.Nullable;
 
 import static ca.fxco.encodedchat.utils.EncodingUtils.NO_ARGS;
 
@@ -29,7 +30,7 @@ public interface EncodingSet {
      *
      * @return the Parsed Argument using the arguments provided
      */
-    default ParsedArguments createArguments() {
+    default ParsedArguments createArguments(@Nullable String[] originalArgs) {
         return NO_ARGS;
     }
 

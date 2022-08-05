@@ -73,29 +73,41 @@ public class SeedEncodingSet implements EncodingSet {
     }
 
     @Override
-    public ParsedArguments createArguments() {
-        return new SeedArguments();
+    public ParsedArguments createArguments(@Nullable String[] originalArgs) {
+        return new SeedArguments(originalArgs);
     }
 
     static class SeedArguments implements ParsedArguments {
 
+        @Nullable
+        private final String[] originalArgs; // Used to save and recreate arguments
+        @Nullable
         private Integer seed = null;
 
-        @Override
-        public boolean validateArguments(@Nullable String[] args) {
-            if (args == null || args.length == 0) return true;
-            return args.length == 1 && EncodingUtils.isNumeric(args[0]);
+        public SeedArguments(@Nullable String[] args) {
+            this.originalArgs = args;
         }
 
         @Override
-        public ParsedArguments parseArguments(String[] args) {
-            this.seed = Integer.parseInt(args[0]);
+        public boolean validateArguments() {
+            if (originalArgs == null || originalArgs.length == 0) return true;
+            return originalArgs.length == 1 && EncodingUtils.isNumeric(originalArgs[0]);
+        }
+
+        @Override
+        public ParsedArguments parseArguments() {
+            this.seed = Integer.parseInt(originalArgs[0]);
             return this;
         }
 
         @Override
         public Object get(int index) {
             return seed;
+        }
+
+        @Override
+        public String[] getOriginalInput() {
+            return originalArgs;
         }
 
         @Override

@@ -17,6 +17,7 @@ public class ChatScreenMixin {
             cancellable = true
     )
     public void onBeforeMessage(String chatText, CallbackInfoReturnable<String> cir) {
-        if (!chatText.isEmpty()) cir.setReturnValue(EncodedChat.SELF_ENCODING_ACTIONS.runEncode(chatText));
+        if (EncodedChat.CONFIG.enabled && !chatText.isEmpty())
+            cir.setReturnValue(EncodedChat.SELF_ENCODING_ACTIONS.runEncode(chatText));
     }
 }

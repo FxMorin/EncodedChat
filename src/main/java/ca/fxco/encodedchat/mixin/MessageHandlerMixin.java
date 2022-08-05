@@ -33,11 +33,11 @@ public class MessageHandlerMixin {
     private void modifyChatMessages(ChatHud instance, Text message, MessageSignatureData signature,
                                     MessageIndicator indicator, MessageType.Parameters params, SignedMessage message2,
                                     Text decorated, @Nullable PlayerListEntry senderEntry) {
-        if (senderEntry != null) {
+        if (EncodedChat.CONFIG.enabled && senderEntry != null) {
             String msg = message.getString();
             String modifyMsg = msg;
             if (!msg.isEmpty()) {
-                EncodingActions actions = EncodedChat.PLAYER_ENCODING_ACTIONS.get(senderEntry.getProfile().getId());
+                EncodingActions actions = EncodedChat.PLAYER_ACTIONS.getPlayerAction(senderEntry.getProfile().getId());
                 if (actions != null) {
                     msg = actions.runDecode(msg);
                 } else {
