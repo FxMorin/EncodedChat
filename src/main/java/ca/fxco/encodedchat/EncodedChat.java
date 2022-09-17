@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class EncodedChat implements ClientModInitializer {
@@ -36,7 +37,6 @@ public class EncodedChat implements ClientModInitializer {
 
     public final static Logger LOGGER = LoggerFactory.getLogger(MODID);
     public final static HashMap<String, EncodingSet> ENCODING_SETS = new HashMap<>();
-    public final static EncodingActions SELF_ENCODING_ACTIONS = new EncodingActions();
 
     private static ConfigManager configManager;
     public static ECConfig CONFIG;
@@ -72,6 +72,7 @@ public class EncodedChat implements ClientModInitializer {
         addEncodingSet(new Rot13EncodingSet());
         addEncodingSet(new SeedEncodingSet());
         addEncodingSet(new ReplaceEncodingSet());
+        addEncodingSet(new ReverseEncodingSet());
     }
 
     public static ConfigManager getConfigManager() {

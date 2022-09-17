@@ -96,7 +96,8 @@ public class SeedEncodingSet implements EncodingSet {
 
         @Override
         public ParsedArguments parseArguments() {
-            this.seed = Integer.parseInt(originalArgs[0]);
+            if (originalArgs != null && originalArgs.length > 0)
+                this.seed = Integer.parseInt(originalArgs[0]);
             return this;
         }
 

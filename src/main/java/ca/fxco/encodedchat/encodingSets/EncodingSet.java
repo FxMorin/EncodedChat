@@ -39,14 +39,18 @@ public interface EncodingSet {
      *
      * @return {@code true} if message has the encoding
      */
-    boolean hasEncoding(String msg, ParsedArguments parsedArgs);
+    default boolean hasEncoding(String msg, ParsedArguments parsedArgs) {
+        return true;
+    }
 
     /**
      * Checks if a message can be encoded using this encoding set
      *
      * @return {@code true} if message can be encoded
      */
-    boolean canEncode(String msg, ParsedArguments parsedArgs);
+    default boolean canEncode(String msg, ParsedArguments parsedArgs) {
+        return true;
+    }
 
     /**
      * Decodes a string that matches the encoding rules.
