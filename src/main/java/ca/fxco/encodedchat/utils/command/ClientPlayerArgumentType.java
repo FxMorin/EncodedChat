@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 //TODO: Actually test this xD
 
 public class ClientPlayerArgumentType implements ArgumentType<PlayerEntity> {
-    private static final Collection<String> EXAMPLES = Arrays.asList("Player", "0123", "@e", "@e[type=foo]");
+    private static final Collection<String> EXAMPLES = Arrays.asList("Player", "PR0CESS", "@s");
     public static final SimpleCommandExceptionType PLAYER_NOT_FOUND_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("argument.entity.notfound.player"));
 
     protected ClientPlayerArgumentType() {}
@@ -34,7 +34,7 @@ public class ClientPlayerArgumentType implements ArgumentType<PlayerEntity> {
         PlayerEntity player = null;
         String playerName = stringReader.readUnquotedString();
         for (AbstractClientPlayerEntity playerEntity : EncodedChat.MC.world.getPlayers()) {
-            if (playerEntity.getEntityName().equals(playerName)) {
+            if (playerEntity.getDisplayName().getString().equals(playerName)) {
                 player = playerEntity;
                 break;
             }
@@ -51,7 +51,9 @@ public class ClientPlayerArgumentType implements ArgumentType<PlayerEntity> {
         if (var4 instanceof CommandSource commandSource) {
             StringReader stringReader = new StringReader(builder.getInput());
             stringReader.setCursor(builder.getStart());
-            EntitySelectorReader entitySelectorReader = new EntitySelectorReader(stringReader);
+            EntitySelectorReader entitySelectorReader = new EntitySelectorReader(stringReader,false);
+            builder.suggest("@p", Text.translatable("argument.entity.selector.nearestPlayer"));
+            builder.suggest("@s", Text.translatable("argument.entity.selector.self"));
             try {
                 entitySelectorReader.read();
             } catch (CommandSyntaxException ignored) {}
